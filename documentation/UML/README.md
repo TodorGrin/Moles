@@ -12,6 +12,9 @@
 2.2. [Ход игрока](#2.2)<br>
 2.3. [Создание карты](#2.3)<br>
 3. [Диаграмма последовательности](#3)
+4. [Диаграмма классов](#4)
+5. [Диаграмма состояний](#5)
+6. [Диаграмма развертывания и компонентов](#6)
 
 ### 1. Диаграмма прецедентов<a name="1"></a>
 Диаграмма прецедентов представляет собой следующую диаграмму: 
@@ -77,3 +80,19 @@
 ![Sequence Diagram](https://github.com/TodorGrin/Moles/blob/main/documentation/UML/SequenceDiagrams/1.png)
 ![Sequence Diagram](https://github.com/TodorGrin/Moles/blob/main/documentation/UML/SequenceDiagrams/2.png)
 ![Sequence Diagram](https://github.com/TodorGrin/Moles/blob/main/documentation/UML/SequenceDiagrams/3.png)
+
+### 4. Диаграмма классов<a name = "4"></a>
+
+Диаграмма классов представляет собой следующую диаграмму:
+![Class Diagram](https://github.com/TodorGrin/Moles/blob/main/documentation/UML/ClassDiagram.png)
+
+### 5. Диаграмма состояний<a name = "5"></a>
+
+Диаграмма состояний представляет собой следующую диаграмму:
+![State machine Diagram](https://github.com/TodorGrin/Moles/blob/main/documentation/UML/StateMachineDiagram.png)
+
+
+### 6. Диаграмма развертывания и компонентов<a name = "6"></a>
+
+Диаграмма развертывания и компонентов представляет собой следующую диаграмму:
+![Component and deployment Diagram](https://github.com/TodorGrin/Moles/blob/main/documentation/UML/ComponentDeploymentDiagram.png)
