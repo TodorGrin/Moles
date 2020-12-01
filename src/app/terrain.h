@@ -10,7 +10,7 @@ class Terrain {
         explicit Terrain(const QSize &size);
 
         std::vector<std::vector<Tile>>& tiles();
-        QSize& size();
+        QSize size() const;
 
     private:
         QSize size_;

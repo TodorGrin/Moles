@@ -18,6 +18,6 @@ std::vector<std::vector<Tile>>& Terrain::tiles() {
     return tiles_;
 }
 
-QSize& Terrain::size() {
+QSize Terrain::size() const {
     return size_;
 }
