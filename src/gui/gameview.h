@@ -2,6 +2,8 @@
 #define GAMEVIEW_H
 
 #include <QWidget>
+#include <memory>
+#include "terrain.h"
 
 namespace Ui {
 class GameView;
@@ -14,7 +16,14 @@ class GameView : public QWidget {
         explicit GameView(QWidget *parent = nullptr);
         ~GameView();
 
+        void setTerrain(std::shared_ptr<Terrain> terrain);
+
+    protected:
+        void paintEvent(QPaintEvent *event) override;
+
     private:
+        std::shared_ptr<Terrain> terrain_ = nullptr;
+
         Ui::GameView *ui;
 };
 

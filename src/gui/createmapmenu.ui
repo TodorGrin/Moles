@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout" rowstretch="0,1,0">
    <item row="1" column="0">
-    <widget class="GameView" name="widget" native="true"/>
+    <widget class="GameView" name="gameView" native="true"/>
    </item>
    <item row="0" column="0">
     <widget class="QLabel" name="label">

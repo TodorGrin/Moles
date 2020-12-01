@@ -9,6 +9,10 @@ CreateMapMenu::~CreateMapMenu() {
     delete ui;
 }
 
+void CreateMapMenu::setTerrain(std::shared_ptr<Terrain> terrain) {
+    ui->gameView->setTerrain(terrain);
+}
+
 void CreateMapMenu::on_backButton_clicked() {
     MainWindow::get(this)->openMainMenu();
 }

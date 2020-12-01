@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "mainwindow.h"
+#include "terrain.h"
 
 namespace Ui {
 class CreateMapMenu;
@@ -14,6 +15,8 @@ class CreateMapMenu : public QWidget {
     public:
         explicit CreateMapMenu(QWidget *parent = nullptr);
         ~CreateMapMenu();
+
+        void setTerrain(std::shared_ptr<Terrain> terrain);
 
     private slots:
         void on_backButton_clicked();

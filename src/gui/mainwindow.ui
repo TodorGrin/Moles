@@ -20,10 +20,10 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
-      <widget class="MainMenu" name="page"/>
-      <widget class="CreateMapMenu" name="page_2"/>
-      <widget class="CreateTeamMenu" name="page_3"/>
-      <widget class="GameView" name="page_4"/>
+      <widget class="MainMenu" name="mainMenu"/>
+      <widget class="CreateMapMenu" name="createMapMenu"/>
+      <widget class="CreateTeamMenu" name="createTeamMenu"/>
+      <widget class="GameView" name="gameView"/>
      </widget>
     </item>
    </layout>
