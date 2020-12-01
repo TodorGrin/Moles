@@ -9,8 +9,8 @@ CreateMapMenu::~CreateMapMenu() {
     delete ui;
 }
 
-void CreateMapMenu::setTerrain(std::shared_ptr<Terrain> terrain) {
-    ui->gameView->setTerrain(terrain);
+void CreateMapMenu::setGameEngine(std::shared_ptr<GameEngine> gameEngine) {
+    ui->gameView->setGameEngine(gameEngine);
 }
 
 void CreateMapMenu::on_backButton_clicked() {

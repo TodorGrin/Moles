@@ -16,7 +16,7 @@ class CreateMapMenu : public QWidget {
         explicit CreateMapMenu(QWidget *parent = nullptr);
         ~CreateMapMenu();
 
-        void setTerrain(std::shared_ptr<Terrain> terrain);
+        void setGameEngine(std::shared_ptr<GameEngine> gameEngine);
 
     private slots:
         void on_backButton_clicked();

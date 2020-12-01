@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "terrain.h"
+#include "gameengine.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,7 +23,7 @@ class MainWindow : public QMainWindow {
         static MainWindow* get(QWidget *widget);
 
     private:
-        std::shared_ptr<Terrain> terrain_;
+        std::shared_ptr<GameEngine> engine_;
 
         Ui::MainWindow *ui;
 };
