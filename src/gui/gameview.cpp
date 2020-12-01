@@ -20,12 +20,17 @@ void GameView::paintEvent(QPaintEvent *event) {
         return;
 
     QPainter painter(this);
-    int tileSize = static_cast<float>(painter.window().width()) / terrain_->size().width();
+    float width = painter.window().width();
+    float height = painter.window().height();
+    int tileSize = std::min(width / terrain_->size().width(), height / terrain_->size().height());
+    QPoint shift((width - terrain_->size().width() * tileSize) / 2, height - terrain_->size().height() * tileSize);
 
+    painter.fillRect(0, 0, painter.window().width(), painter.window().height(), QColor::fromRgb(128, 217, 255));
+    painter.translate(shift);
     for (int x = 0; x < terrain_->size().width(); ++x) {
         for (int y = 0; y < terrain_->size().height(); ++y) {
             QRect rec(QPoint(x, y) * tileSize, QSize(tileSize, tileSize));
-            painter.fillRect(rec, QBrush(terrain_->tiles()[x][y].color(), Qt::SolidPattern));
+            painter.fillRect(rec, terrain_->tiles()[x][y].color());
         }
     }
 }
