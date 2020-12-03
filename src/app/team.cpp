@@ -1,7 +1,11 @@
 #include "team.h"
 
 
-Team::Team(const QString &name, int charactersCount) : name_(name), characters_(charactersCount) {
+Team::Team(const QString &name, int charactersCount, const QColor &color) : name_(name), characters_(charactersCount), color_(color) {
+}
+
+QColor Team::color() const {
+    return color_;
 }
 
 int Team::health() const {

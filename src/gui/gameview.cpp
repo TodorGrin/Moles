@@ -32,7 +32,7 @@ void GameView::drawTeamsInfo(QPainter &painter) {
     painter.translate(start);
     painter.fillRect(-12, 12, 104, -12 -spacing * engine_->teams().size(), QColor::fromRgb(245, 123, 0));
     painter.fillRect(-10, 10, 100, -8 -spacing * engine_->teams().size(), QColor::fromRgb(255, 193, 7));
-    painter.setPen(Qt::white);
+    painter.setPen(QColor::fromRgb(93, 64, 55));
 
     QFont font("Verdana", 8);
     font.setBold(true);
@@ -45,10 +45,23 @@ void GameView::drawTeamsInfo(QPainter &painter) {
         Team &team = teams[i];
 
         painter.drawText(0, -spacing * i - 5, team.name());
-        painter.fillRect(0, -spacing * i, 80.0 * team.health() / team.maxHealth(), 5, Qt::white);
+        painter.fillRect(0, -spacing * i, 80.0 * team.health() / team.maxHealth(), 5, team.color());
     }
 
     painter.restore();
+}
+
+void GameView::drawCharacters(QPainter &painter, int tileSize) {
+    for (Team &team : engine_->teams()) {
+        painter.setBrush(QBrush(team.color(), Qt::SolidPattern));
+
+        for (Character &ch : team.characters()) {
+            painter.drawRect((ch.position().x() - ch.size().width() / 2) * tileSize,
+                             (ch.position().y() - ch.size().height() / 2) * tileSize,
+                             ch.size().width() * tileSize,
+                             ch.size().height() * tileSize);
+        }
+    }
 }
 
 void GameView::drawTerrain(QPainter &painter) {
@@ -69,5 +82,6 @@ void GameView::drawTerrain(QPainter &painter) {
         }
     }
 
+    drawCharacters(painter, tileSize);
     painter.restore();
 }

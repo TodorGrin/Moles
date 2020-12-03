@@ -4,11 +4,13 @@
 #include "character.h"
 #include <vector>
 #include <QString>
+#include <QColor>
 
 class Team {
     public:
-        explicit Team(const QString &name, int charactersCount);
+        explicit Team(const QString &name, int charactersCount, const QColor &color);
 
+        QColor color() const;
         int health() const;
         int maxHealth() const;
         QString name() const;
@@ -17,6 +19,7 @@ class Team {
     private:
         QString name_;
         std::vector<Character> characters_;
+        QColor color_;
 };
 
 #endif // TEAM_H

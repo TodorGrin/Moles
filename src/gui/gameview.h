@@ -26,6 +26,7 @@ class GameView : public QWidget {
         Ui::GameView *ui;
 
         void drawTeamsInfo(QPainter &painter);
+        void drawCharacters(QPainter &painter, int tileSize);
         void drawTerrain(QPainter &painter);
 };
 
