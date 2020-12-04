@@ -4,6 +4,14 @@
 Team::Team(const QString &name, int charactersCount, const QColor &color) : name_(name), characters_(charactersCount), color_(color) {
 }
 
+void Team::nextTurn() {
+    currentCharacter_ = (currentCharacter_ + 1) % characters_.size();
+}
+
+Character &Team::currentCharacter() {
+    return characters_[currentCharacter_];
+}
+
 QColor Team::color() const {
     return color_;
 }

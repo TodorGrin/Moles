@@ -5,8 +5,6 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
-
-    engine_ = std::make_shared<GameEngine>(Terrain(QSize(200, 100)), 4);
 }
 
 MainWindow::~MainWindow() {
@@ -27,17 +25,18 @@ void MainWindow::openMainMenu() {
     ui->stackedWidget->setCurrentIndex(0);
 }
 
-void MainWindow::openCreateMapMenu() {
-    ui->createMapMenu->setGameEngine(engine_);
-    ui->stackedWidget->setCurrentIndex(1);
-}
-
 void MainWindow::openCreateTeamMenu() {
     ui->createMapMenu->setGameEngine(nullptr);
     ui->stackedWidget->setCurrentIndex(2);
 }
 
-void MainWindow::openGameView() {
+void MainWindow::openCreateMapMenu(std::shared_ptr<GameEngine> engine_) {
+    ui->createMapMenu->setGameEngine(engine_);
+    ui->stackedWidget->setCurrentIndex(1);
+}
+
+
+void MainWindow::openGameView(std::shared_ptr<GameEngine> engine_) {
     ui->gameView->setGameEngine(engine_);
     ui->stackedWidget->setCurrentIndex(3);
 }

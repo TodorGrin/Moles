@@ -1,6 +1,7 @@
 INCLUDEPATH += $$PWD
 
 HEADERS += \
+    $$PWD/actions.h \
     $$PWD/character.h \
     $$PWD/gameengine.h \
     $$PWD/team.h \
@@ -8,6 +9,7 @@ HEADERS += \
     $$PWD/tile.h
 
 SOURCES += \
+    $$PWD/actions.cpp \
     $$PWD/character.cpp \
     $$PWD/gameengine.cpp \
     $$PWD/team.cpp \

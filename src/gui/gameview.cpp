@@ -2,17 +2,60 @@
 #include "ui_gameview.h"
 #include <QPainter>
 #include <QBrush>
+#include <QPainterPath>
+#include <QKeyEvent>
+
+void GameView::keyPressEvent(QKeyEvent *event) {
+    if (!engine_)
+        return;
+
+    if (event->key() == Qt::Key_D) engine_->actions().moveRight = true;
+    if (event->key() == Qt::Key_A) engine_->actions().moveLeft = true;
+    if (event->key() == Qt::Key_Space) engine_->actions().jump = true;
+}
+
+void GameView::keyReleaseEvent(QKeyEvent *event) {
+    if (!engine_)
+        return;
+
+    if (event->key() == Qt::Key_D) engine_->actions().moveRight = false;
+    if (event->key() == Qt::Key_A) engine_->actions().moveLeft = false;
+    if (event->key() == Qt::Key_Space) engine_->actions().jump = false;
+}
 
 GameView::GameView(QWidget *parent) : QWidget(parent), ui(new Ui::GameView) {
     ui->setupUi(this);
+
+    setFocusPolicy(Qt::StrongFocus);
+    tickTimer_ = new QTimer(this);
+    connect(tickTimer_, SIGNAL(timeout()), this, SLOT(nextTick()));
 }
 
 GameView::~GameView() {
     delete ui;
 }
 
+void GameView::nextTick() {
+    if (!engine_)
+        return;
+
+    engine_->tick();
+    update();
+}
+
 void GameView::setGameEngine(std::shared_ptr<GameEngine> gameEngine) {
     engine_ = gameEngine;
+
+    if (engine_) {
+        tickTimer_->stop();
+        tickTimer_->start(1.0 / 60);
+    }
+    else
+        tickTimer_->stop();
+}
+
+std::shared_ptr<GameEngine> GameView::gameEngine() {
+    return engine_;
 }
 
 void GameView::paintEvent(QPaintEvent *event) {
@@ -49,6 +92,9 @@ void GameView::drawTeamsInfo(QPainter &painter) {
     }
 
     painter.restore();
+    painter.setFont(font);
+    painter.setPen(engine_->currentTeam().color());
+    painter.drawText(painter.device()->width() / 2, 20, engine_->currentTeam().name());
 }
 
 void GameView::drawCharacters(QPainter &painter, int tileSize) {
@@ -84,4 +130,11 @@ void GameView::drawTerrain(QPainter &painter) {
 
     drawCharacters(painter, tileSize);
     painter.restore();
+}
+
+void GameView::on_pushButton_clicked() {
+    if (!engine_)
+        return;
+
+    engine_->nextTurn();
 }

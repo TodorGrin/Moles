@@ -10,9 +10,11 @@ CreateTeamMenu::~CreateTeamMenu() {
 }
 
 void CreateTeamMenu::on_backButton_clicked() {
-    MainWindow::get(this)->openCreateMapMenu();
+    MainWindow::get(this)->openMainMenu();
 }
 
 void CreateTeamMenu::on_playButton_clicked() {
-    MainWindow::get(this)->openGameView();
+    std::shared_ptr<GameEngine> engine = std::make_shared<GameEngine>(Terrain(QSize(200, 100)), ui->teamsCount->value());
+
+    MainWindow::get(this)->openCreateMapMenu(engine);
 }

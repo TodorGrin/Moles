@@ -13,5 +13,5 @@ MainMenu::~MainMenu() {
 }
 
 void MainMenu::on_playButton_clicked() {
-    MainWindow::get(this)->openCreateMapMenu();
+    MainWindow::get(this)->openCreateTeamMenu();
 }

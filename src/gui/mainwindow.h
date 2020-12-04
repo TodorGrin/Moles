@@ -16,9 +16,9 @@ class MainWindow : public QMainWindow {
         ~MainWindow();
 
         void openMainMenu();
-        void openCreateMapMenu();
         void openCreateTeamMenu();
-        void openGameView();
+        void openCreateMapMenu(std::shared_ptr<GameEngine> engine_);
+        void openGameView(std::shared_ptr<GameEngine> engine_);
 
         static MainWindow* get(QWidget *widget);
 

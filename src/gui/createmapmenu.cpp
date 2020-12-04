@@ -14,9 +14,9 @@ void CreateMapMenu::setGameEngine(std::shared_ptr<GameEngine> gameEngine) {
 }
 
 void CreateMapMenu::on_backButton_clicked() {
-    MainWindow::get(this)->openMainMenu();
+    MainWindow::get(this)->openCreateTeamMenu();
 }
 
 void CreateMapMenu::on_okButton_clicked() {
-    MainWindow::get(this)->openCreateTeamMenu();
+    MainWindow::get(this)->openGameView(ui->gameView->gameEngine());
 }
