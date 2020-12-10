@@ -1,6 +1,7 @@
 #include "gameview.h"
 #include "ui_gameview.h"
 #include "teaminfowidget.h"
+#include "chooseweapondialog.h"
 #include <QPainter>
 #include <QBrush>
 #include <QPainterPath>
@@ -13,7 +14,8 @@ GameView::GameView(QWidget *parent) : QWidget(parent), ui(new Ui::GameView) {
 
     QFile qss(":/qss/stylesheet.qss");
     qss.open(QFile::ReadOnly);
-    setStyleSheet(qss.readAll());
+    stylesheet_ = qss.readAll();
+    setStyleSheet(stylesheet_);
 
     setFocusPolicy(Qt::StrongFocus);
     tickTimer_ = new QTimer(this);
@@ -36,6 +38,12 @@ void GameView::keyPressEvent(QKeyEvent *event) {
 
     if (event->key() == Qt::Key_E) {
         c.actions().shoot = true;
+    }
+
+    if (event->key() == Qt::Key_R) {
+        chooseWeaponDialog = new ChooseWeaponDialog(*engine_);
+        chooseWeaponDialog->setStyleSheet(stylesheet_);
+        chooseWeaponDialog->exec();
     }
 }
 
@@ -119,6 +127,7 @@ void GameView::paintEvent(QPaintEvent *event) {
 
 void GameView::drawTeamsInfo(QPainter &painter) {
     ui->currentTeam->setText(engine_->currentTeam().name());
+    ui->currentWeapon->setText(engine_->currentTeam().currentCharacter().actions().weapon->name());
 }
 
 void GameView::drawCharacters(QPainter &painter, int tileSize) {

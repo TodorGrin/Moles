@@ -2,6 +2,7 @@
 #define WEAPON_H
 
 #include <memory>
+#include <QString>
 
 class GameEngine;
 
@@ -14,7 +15,7 @@ class Weapon {
 
         virtual void shoot(GameEngine &engine) = 0;
 
-        //virtual std::shared_ptr<Weapon> clone() = 0;
+        virtual QString name() const = 0;
 };
 
 #endif // WEAPON_H

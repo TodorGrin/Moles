@@ -7,6 +7,8 @@ class Bazooka : public Gun {
     public:
         Bazooka();
 
+        virtual QString name() const override;
+
     protected:
         const double explosionRadius_ = 5;
 

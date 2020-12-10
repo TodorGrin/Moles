@@ -6,6 +6,8 @@
 class Uzi : public Gun {
     public:
         Uzi();
+
+        virtual QString name() const override;
 };
 
 #endif // UZI_H

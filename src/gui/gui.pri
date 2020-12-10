@@ -1,6 +1,7 @@
 INCLUDEPATH += $$PWD
 
 FORMS += \
+    $$PWD/chooseweapondialog.ui \
     $$PWD/createmapmenu.ui \
     $$PWD/createteammenu.ui \
     $$PWD/gameview.ui \
@@ -9,6 +10,7 @@ FORMS += \
     $$PWD/teaminfowidget.ui
 
 HEADERS += \
+    $$PWD/chooseweapondialog.h \
     $$PWD/createmapmenu.h \
     $$PWD/createteammenu.h \
     $$PWD/gameview.h \
@@ -17,6 +19,7 @@ HEADERS += \
     $$PWD/teaminfowidget.h
 
 SOURCES += \
+    $$PWD/chooseweapondialog.cpp \
     $$PWD/createmapmenu.cpp \
     $$PWD/createteammenu.cpp \
     $$PWD/gameview.cpp \

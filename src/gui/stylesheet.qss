@@ -1,19 +1,19 @@
 .QPushButton {
-	background-color: rgb(255, 193, 7);
-	border: 2px solid rgb(245, 123, 0);
-	padding: 5px;
+    background-color: rgb(255, 193, 7);
+    border: 2px solid rgb(245, 123, 0);
+    padding: 5px;
 
-	font: 8pt "Verdana";
-	font-weight: bold;
-	color: rgb(93, 64, 55);
+    font: 8pt "Verdana";
+    font-weight: bold;
+    color: rgb(93, 64, 55);
 }
 
 .QPushButton:hover {
-	background-color: rgb(247, 187, 7);
+    background-color: rgb(247, 187, 7);
 }
 
 .QPushButton:pressed {
-	background-color: rgb(235, 177, 5);
+    background-color: rgb(235, 177, 5);
 }
 
 .QLabel {
@@ -25,10 +25,35 @@
 .QFrame {
     background-color: rgb(255, 193, 7);
     border: 2px solid rgb(245, 123, 0);
+    border-radius: 5px;
+}
+
+.QListWidget {
+    background-color: rgb(255, 193, 7);
+    border: 2px solid rgb(245, 123, 0);
+    border-radius: 5px;
+    padding: 10px;
+
+    font: 12pt "Verdana";
+    font-weight: bold;
+    color: rgb(93, 64, 55);
+    outline: 0;
+}
+
+.QListWidget::item:hover {
+    background-color: rgb(247, 187, 7);
+}
+
+.QListWidget::item:selected {
+    background-color: rgb(235, 177, 5);
 }
 
 .QProgressBar {
     border: none;
     background-color: rgba(0, 0, 0, 0);
     max-height: 5px;
+}
+
+.QDialog {
+    background: rgb(255, 0, 0);
 }

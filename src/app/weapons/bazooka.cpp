@@ -6,6 +6,10 @@ Bazooka::Bazooka() : Gun(0.01, 1, 45, 0.25, 1) {
 
 }
 
+QString Bazooka::name() const {
+    return "Bazooka";
+}
+
 void Bazooka::onTileHit(const QPointF &position, GameEngine &engine) {
     for (int x = position.x() - explosionRadius_; x <= position.x() + explosionRadius_; ++x) {
         for (int y = position.y() - explosionRadius_; y <= position.y() + explosionRadius_; ++y) {

@@ -7,6 +7,7 @@
 #include <QMouseEvent>
 #include "gameengine.h"
 #include "teaminfowidget.h"
+#include "chooseweapondialog.h"
 
 namespace Ui {
 class GameView;
@@ -35,6 +36,8 @@ class GameView : public QWidget {
 
         Ui::GameView *ui;
         std::vector<TeamInfoWidget*> teamInfoWidgets;
+        ChooseWeaponDialog *chooseWeaponDialog;
+        QString stylesheet_;
 
         void rebuildUi();
 
