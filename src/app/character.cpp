@@ -18,7 +18,15 @@ void Character::damage(int damageAmount) {
     health_ = std::max(health_, 0);
 }
 
-QVector2D Character::speed() {
+Actions &Character::actions() {
+    return actions_;
+}
+
+bool Character::isAlive() const {
+    return health_ > 0;
+}
+
+QVector2D Character::speed() const {
     return speed_;
 }
 
@@ -39,5 +47,5 @@ QSizeF Character::size() {
 }
 
 float Character::stepLength() {
-    return 0.05;
+    return 0.02;
 }

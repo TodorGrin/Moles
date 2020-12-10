@@ -13,6 +13,7 @@ class Team {
         void nextTurn();
 
         Character& currentCharacter();
+        bool isAlive() const;
         QColor color() const;
         int health() const;
         int maxHealth() const;

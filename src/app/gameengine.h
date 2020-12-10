@@ -3,7 +3,6 @@
 
 #include "team.h"
 #include "terrain.h"
-#include "actions.h"
 #include <memory>
 #include <vector>
 
@@ -17,12 +16,10 @@ class GameEngine {
         Team& currentTeam();
         Terrain& terrain();
         std::vector<Team>& teams();
-        Actions& actions();
 
     private:
         Terrain terrain_;
         std::vector<Team> teams_;
-        Actions actions_;
 
         int currentTeam_ = 0;
 };

@@ -5,11 +5,26 @@ Team::Team(const QString &name, int charactersCount, const QColor &color) : name
 }
 
 void Team::nextTurn() {
-    currentCharacter_ = (currentCharacter_ + 1) % characters_.size();
+    for (int i = 1; i <= characters_.size(); ++i) {
+        int nextCharacter = (currentCharacter_ + i) % characters_.size();
+
+        if (characters_[nextCharacter].isAlive()) {
+            currentCharacter_ = nextCharacter;
+            return;
+        }
+    }
 }
 
 Character &Team::currentCharacter() {
     return characters_[currentCharacter_];
+}
+
+bool Team::isAlive() const {
+    for (auto &ch : characters_)
+        if (ch.isAlive())
+            return true;
+
+    return false;
 }
 
 QColor Team::color() const {

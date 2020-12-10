@@ -4,23 +4,48 @@
 #include <QBrush>
 #include <QPainterPath>
 #include <QKeyEvent>
+#include <QtDebug>
 
 void GameView::keyPressEvent(QKeyEvent *event) {
     if (!engine_)
         return;
 
-    if (event->key() == Qt::Key_D) engine_->actions().moveRight = true;
-    if (event->key() == Qt::Key_A) engine_->actions().moveLeft = true;
-    if (event->key() == Qt::Key_Space) engine_->actions().jump = true;
+    Character &c = engine_->currentTeam().currentCharacter();
+
+    if (event->key() == Qt::Key_D) c.actions().moveRight = true;
+    if (event->key() == Qt::Key_A) c.actions().moveLeft = true;
+    if (!event->isAutoRepeat() && event->key() == Qt::Key_Space) c.actions().jump = true;
+
+    if (event->key() == Qt::Key_E) {
+        c.actions().shoot = true;
+    }
 }
 
 void GameView::keyReleaseEvent(QKeyEvent *event) {
     if (!engine_)
         return;
 
-    if (event->key() == Qt::Key_D) engine_->actions().moveRight = false;
-    if (event->key() == Qt::Key_A) engine_->actions().moveLeft = false;
-    if (event->key() == Qt::Key_Space) engine_->actions().jump = false;
+    Character &c = engine_->currentTeam().currentCharacter();
+
+    if (event->key() == Qt::Key_D) c.actions().moveRight = false;
+    if (event->key() == Qt::Key_A) c.actions().moveLeft = false;
+    if (event->key() == Qt::Key_Space) c.actions().jump = false;
+}
+
+void GameView::mouseMoveEvent(QMouseEvent *event) {
+    if (!engine_)
+        return;
+
+    Terrain &terrain = engine_->terrain();
+    int tileSize = std::min(size_.width() / terrain.size().width(), size_.height() / terrain.size().height());
+    QPoint shift((size_.width() - terrain.size().width() * tileSize) / 2, size_.height() - terrain.size().height() * tileSize);
+
+    Character &ch = engine_->currentTeam().currentCharacter();
+    QPoint chPos((ch.position().x() - ch.size().width() / 2) * tileSize, (ch.position().y() - ch.size().height() / 2) * tileSize);
+    chPos += shift;
+
+    QVector2D dv(event->pos() - chPos);
+    engine_->currentTeam().currentCharacter().actions().weapon->angle_ = atan2(dv.y(), dv.x());
 }
 
 GameView::GameView(QWidget *parent) : QWidget(parent), ui(new Ui::GameView) {
@@ -63,6 +88,8 @@ void GameView::paintEvent(QPaintEvent *event) {
         return;
 
     QPainter painter(this);
+    size_ = painter.window().size();
+
     drawTerrain(painter);
     drawTeamsInfo(painter);
 }
@@ -98,24 +125,37 @@ void GameView::drawTeamsInfo(QPainter &painter) {
 }
 
 void GameView::drawCharacters(QPainter &painter, int tileSize) {
+    painter.save();
+
+    QFont font("Verdana", 12);
+    painter.setFont(font);
+
     for (Team &team : engine_->teams()) {
         painter.setBrush(QBrush(team.color(), Qt::SolidPattern));
 
         for (Character &ch : team.characters()) {
-            painter.drawRect((ch.position().x() - ch.size().width() / 2) * tileSize,
-                             (ch.position().y() - ch.size().height() / 2) * tileSize,
-                             ch.size().width() * tileSize,
-                             ch.size().height() * tileSize);
+            if (ch.isAlive()) {
+                painter.setPen(Qt::black);
+                painter.drawRect((ch.position().x() - ch.size().width() / 2) * tileSize,
+                                (ch.position().y() - ch.size().height() / 2) * tileSize,
+                                 ch.size().width() * tileSize,
+                                ch.size().height() * tileSize);
+
+                if (ch.actions().damagedCooldown > 0) {
+                    painter.setPen(Qt::red);
+                    painter.drawText((ch.position().toPointF() + QPointF(1, 1)) * tileSize, QString::number(ch.actions().damaged));
+                }
+            }
         }
     }
+
+    painter.restore();
 }
 
 void GameView::drawTerrain(QPainter &painter) {
     Terrain &terrain = engine_->terrain();
-    float width = painter.window().width();
-    float height = painter.window().height();
-    int tileSize = std::min(width / terrain.size().width(), height / terrain.size().height());
-    QPoint shift((width - terrain.size().width() * tileSize) / 2, height - terrain.size().height() * tileSize);
+    int tileSize = std::min(size_.width() / terrain.size().width(), size_.height() / terrain.size().height());
+    QPoint shift((size_.width() - terrain.size().width() * tileSize) / 2, size_.height() - terrain.size().height() * tileSize);
 
     painter.save();
     painter.fillRect(0, 0, painter.window().width(), painter.window().height(), QColor::fromRgb(128, 217, 255));
@@ -128,7 +168,22 @@ void GameView::drawTerrain(QPainter &painter) {
         }
     }
 
+    std::shared_ptr<Weapon> weapon = engine_->currentTeam().currentCharacter().actions().weapon;
+    if (weapon) {
+        QPen pen(Qt::DotLine);
+        pen.setWidth(2);
+        painter.save();
+        painter.setPen(pen);
+
+        Character &ch = engine_->currentTeam().currentCharacter();
+        QPointF chPos(ch.position().toPointF() * tileSize);
+        painter.drawLine(chPos, chPos + tileSize * 10 * QPointF(cos(weapon->angle_), sin(weapon->angle_)));
+
+        painter.restore();
+    }
+
     drawCharacters(painter, tileSize);
+
     painter.restore();
 }
 
