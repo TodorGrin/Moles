@@ -5,6 +5,19 @@
 #include <QPainterPath>
 #include <QKeyEvent>
 #include <QtDebug>
+#include <QPalette>
+
+GameView::GameView(QWidget *parent) : QWidget(parent), ui(new Ui::GameView) {
+    ui->setupUi(this);
+
+    setFocusPolicy(Qt::StrongFocus);
+    tickTimer_ = new QTimer(this);
+    connect(tickTimer_, SIGNAL(timeout()), this, SLOT(nextTick()));
+}
+
+GameView::~GameView() {
+    delete ui;
+}
 
 void GameView::keyPressEvent(QKeyEvent *event) {
     if (!engine_)
@@ -46,18 +59,6 @@ void GameView::mouseMoveEvent(QMouseEvent *event) {
 
     QVector2D dv(event->pos() - chPos);
     engine_->currentTeam().currentCharacter().actions().weapon->angle_ = atan2(dv.y(), dv.x());
-}
-
-GameView::GameView(QWidget *parent) : QWidget(parent), ui(new Ui::GameView) {
-    ui->setupUi(this);
-
-    setFocusPolicy(Qt::StrongFocus);
-    tickTimer_ = new QTimer(this);
-    connect(tickTimer_, SIGNAL(timeout()), this, SLOT(nextTick()));
-}
-
-GameView::~GameView() {
-    delete ui;
 }
 
 void GameView::nextTick() {

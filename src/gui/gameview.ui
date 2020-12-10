@@ -17,31 +17,6 @@
    <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
-    <spacer name="horizontalSpacer">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>40</width>
-       <height>20</height>
-      </size>
-     </property>
-    </spacer>
-   </item>
-   <item row="1" column="1">
-    <widget class="QPushButton" name="pushButton">
-     <property name="font">
-      <font>
-       <pointsize>10</pointsize>
-      </font>
-     </property>
-     <property name="text">
-      <string>End turn</string>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="1">
     <spacer name="verticalSpacer">
      <property name="orientation">
@@ -51,6 +26,62 @@
       <size>
        <width>20</width>
        <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="pushButton">
+     <property name="font">
+      <font>
+       <family>Verdana</family>
+       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <italic>false</italic>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	background-color: rgb(255, 193, 7);
+	border: 2px solid rgb(245, 123, 0);
+	padding: 5px;
+
+	font: 8pt &quot;Verdana&quot;;
+	font-weight: bold;
+	color: rgb(93, 64, 55);
+}
+
+QPushButton:hover {
+	background-color: rgb(247, 187, 7);
+}
+
+QPushButton:pressed {
+	background-color: rgb(235, 177, 5);
+}
+
+</string>
+     </property>
+     <property name="text">
+      <string>End turn</string>
+     </property>
+     <property name="flat">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
       </size>
      </property>
     </spacer>
