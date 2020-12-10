@@ -6,6 +6,7 @@
 #include <QTimer>
 #include <QMouseEvent>
 #include "gameengine.h"
+#include "teaminfowidget.h"
 
 namespace Ui {
 class GameView;
@@ -31,7 +32,11 @@ class GameView : public QWidget {
         std::shared_ptr<GameEngine> engine_ = nullptr;
         QTimer *tickTimer_;
         QSizeF size_;
+
         Ui::GameView *ui;
+        std::vector<TeamInfoWidget*> teamInfoWidgets;
+
+        void rebuildUi();
 
         void drawTeamsInfo(QPainter &painter);
         void drawCharacters(QPainter &painter, int tileSize);

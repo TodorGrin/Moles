@@ -1,4 +1,4 @@
-QPushButton {
+.QPushButton {
 	background-color: rgb(255, 193, 7);
 	border: 2px solid rgb(245, 123, 0);
 	padding: 5px;
@@ -8,11 +8,27 @@ QPushButton {
 	color: rgb(93, 64, 55);
 }
 
-QPushButton:hover {
+.QPushButton:hover {
 	background-color: rgb(247, 187, 7);
 }
 
-QPushButton:pressed {
+.QPushButton:pressed {
 	background-color: rgb(235, 177, 5);
 }
 
+.QLabel {
+    font: 8pt "Verdana";
+    font-weight: bold;
+    color: rgb(93, 64, 55);
+}
+
+.QFrame {
+    background-color: rgb(255, 193, 7);
+    border: 2px solid rgb(245, 123, 0);
+}
+
+.QProgressBar {
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+    max-height: 5px;
+}

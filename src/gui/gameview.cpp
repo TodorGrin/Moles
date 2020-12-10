@@ -1,5 +1,6 @@
 #include "gameview.h"
 #include "ui_gameview.h"
+#include "teaminfowidget.h"
 #include <QPainter>
 #include <QBrush>
 #include <QPainterPath>
@@ -65,6 +66,21 @@ void GameView::mouseMoveEvent(QMouseEvent *event) {
     engine_->currentTeam().currentCharacter().actions().weapon->angle_ = atan2(dv.y(), dv.x());
 }
 
+void GameView::rebuildUi() {
+    for (TeamInfoWidget *widget : teamInfoWidgets) {
+        ui->teamsInfoFrame->removeWidget(widget);
+        widget->deleteLater();
+    }
+    teamInfoWidgets.clear();
+
+    for (Team &team : engine_->teams()) {
+        TeamInfoWidget *widget = new TeamInfoWidget(team);
+        ui->teamsInfoFrame->addWidget(widget);
+
+        teamInfoWidgets.push_back(widget);
+    }
+}
+
 void GameView::nextTick() {
     if (!engine_)
         return;
@@ -77,6 +93,8 @@ void GameView::setGameEngine(std::shared_ptr<GameEngine> gameEngine) {
     engine_ = gameEngine;
 
     if (engine_) {
+        rebuildUi();
+
         tickTimer_->stop();
         tickTimer_->start(1.0 / 60);
     }
@@ -100,33 +118,7 @@ void GameView::paintEvent(QPaintEvent *event) {
 }
 
 void GameView::drawTeamsInfo(QPainter &painter) {
-    float spacing = 25;
-    QPoint start(20, painter.device()->height() - 20);
-
-    painter.save();
-    painter.translate(start);
-    painter.fillRect(-12, 12, 104, -12 -spacing * engine_->teams().size(), QColor::fromRgb(245, 123, 0));
-    painter.fillRect(-10, 10, 100, -8 -spacing * engine_->teams().size(), QColor::fromRgb(255, 193, 7));
-    painter.setPen(QColor::fromRgb(93, 64, 55));
-
-    QFont font("Verdana", 8);
-    font.setBold(true);
-    painter.setFont(font);
-
-    std::vector<Team> teams = engine_->teams();
-    sort(teams.begin(), teams.end(), [](const Team &t1, const Team &t2) { return (float) t1.health() / t1.maxHealth() < (float) t2.health() / t2.maxHealth();});
-
-    for (int i = 0; i < teams.size(); ++i) {
-        Team &team = teams[i];
-
-        painter.drawText(0, -spacing * i - 5, team.name());
-        painter.fillRect(0, -spacing * i, 80.0 * team.health() / team.maxHealth(), 5, team.color());
-    }
-
-    painter.restore();
-    painter.setFont(font);
-    painter.setPen(engine_->currentTeam().color());
-    painter.drawText(painter.device()->width() / 2, 20, engine_->currentTeam().name());
+    ui->currentTeam->setText(engine_->currentTeam().name());
 }
 
 void GameView::drawCharacters(QPainter &painter, int tileSize) {

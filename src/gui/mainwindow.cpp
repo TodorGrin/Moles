@@ -39,4 +39,5 @@ void MainWindow::openCreateMapMenu(std::shared_ptr<GameEngine> engine_) {
 void MainWindow::openGameView(std::shared_ptr<GameEngine> engine_) {
     ui->gameView->setGameEngine(engine_);
     ui->stackedWidget->setCurrentIndex(3);
+    setWindowState(Qt::WindowFullScreen);
 }
