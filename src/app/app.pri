@@ -10,6 +10,7 @@ HEADERS += \
     $$PWD/tile.h \
     $$PWD/trajectory.h \
     $$PWD/weapon.h \
+    $$PWD/weapons/bazooka.h \
     $$PWD/weapons/gun.h \
     $$PWD/weapons/uzi.h
 
@@ -22,6 +23,7 @@ SOURCES += \
     $$PWD/tile.cpp \
     $$PWD/trajectory.cpp \
     $$PWD/weapon.cpp \
+    $$PWD/weapons/bazooka.cpp \
     $$PWD/weapons/gun.cpp \
     $$PWD/weapons/uzi.cpp
 

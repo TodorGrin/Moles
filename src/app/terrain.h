@@ -11,6 +11,7 @@ class Terrain {
 
         std::vector<std::vector<Tile>>& tiles();
         QSize size() const;
+        bool isInBounds(const QPointF &point);
 
     private:
         QSize size_;

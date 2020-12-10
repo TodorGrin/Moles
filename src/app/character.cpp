@@ -16,6 +16,9 @@ void Character::setSpeed(const QVector2D &speed) {
 void Character::damage(int damageAmount) {
     health_ -= damageAmount;
     health_ = std::max(health_, 0);
+
+    actions_.damaged = damageAmount;
+    actions_.damagedCooldown = 4 * 60;
 }
 
 Actions &Character::actions() {

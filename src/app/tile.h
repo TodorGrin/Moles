@@ -5,13 +5,17 @@
 
 class Tile {
     public:
-        explicit Tile(const QColor &color, bool isBackground);
+        explicit Tile(const QColor &color, const QColor backgroundColor);
+        explicit Tile(const QColor backgroundColor);
+
+        void destroy();
 
         QColor color();
         bool isBackground();
 
     private:
         QColor color_;
+        QColor backgroundColor_;
         bool isBackground_;
 };
 

@@ -36,12 +36,14 @@ void Gun::shoot(GameEngine &engine) {
         if (!tile.isBackground()) {
             tilesDestroyed++;
 
-            if (tilesDestroyed >= maxTilesDestroyed_)
+            if (tilesDestroyed > maxTilesDestroyed_)
                 break;
+
+            tile.destroy();
+            onTileHit(p, engine);
         }
 
         prevP = p;
-        tile = Tile(QColor::fromRgb(128, 217, 255), true);
     }
 
     double reachLength = ray.t(p);
@@ -75,10 +77,12 @@ void Gun::shoot(GameEngine &engine) {
 
             if (hit) {
                 ch.damage(damage_);
-                ch.actions().damaged = damage_;
                 ch.actions().damageDirection = QVector2D(ch.position().toPointF() - ray.point(ray.t(ch.position().toPointF()) - 1)).normalized() * knockback_;
-                ch.actions().damagedCooldown = 4 * 60;
             }
         }
     }
+}
+
+void Gun::onTileHit(const QPointF &position, GameEngine &engine) {
+
 }

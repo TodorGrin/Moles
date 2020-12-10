@@ -1,7 +1,7 @@
 #include "actions.h"
-#include "weapons/uzi.h"
+#include "weapons/bazooka.h"
 
-Actions::Actions() : weapon(std::make_shared<Uzi>()) {
+Actions::Actions() : weapon(std::make_shared<Bazooka>()) {
 }
 
 void Actions::reset() {

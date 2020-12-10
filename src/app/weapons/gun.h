@@ -2,6 +2,7 @@
 #define GUN_H
 
 #include "weapon.h"
+#include <QPointF>
 
 class Gun : public Weapon {
     public:
@@ -16,6 +17,8 @@ class Gun : public Weapon {
         const double damage_;
         const double knockback_;
         const int maxTilesDestroyed_;
+
+        virtual void onTileHit(const QPointF &position, GameEngine &engine);
 };
 
 #endif // GUN_H
