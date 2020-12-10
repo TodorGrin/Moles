@@ -20,3 +20,9 @@ SOURCES += \
     $$PWD/gameview.cpp \
     $$PWD/mainmenu.cpp \
     $$PWD/mainwindow.cpp
+
+RESOURCES += \
+    $$PWD/resources.qrc
+
+DISTFILES += \
+    $$PWD/stylesheet.qss

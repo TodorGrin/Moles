@@ -34,36 +34,14 @@
     <widget class="QPushButton" name="pushButton">
      <property name="font">
       <font>
-       <family>Verdana</family>
-       <pointsize>8</pointsize>
-       <weight>75</weight>
-       <italic>false</italic>
-       <bold>true</bold>
+       <pointsize>10</pointsize>
       </font>
      </property>
      <property name="autoFillBackground">
-      <bool>false</bool>
+      <bool>true</bool>
      </property>
      <property name="styleSheet">
-      <string notr="true">QPushButton {
-	background-color: rgb(255, 193, 7);
-	border: 2px solid rgb(245, 123, 0);
-	padding: 5px;
-
-	font: 8pt &quot;Verdana&quot;;
-	font-weight: bold;
-	color: rgb(93, 64, 55);
-}
-
-QPushButton:hover {
-	background-color: rgb(247, 187, 7);
-}
-
-QPushButton:pressed {
-	background-color: rgb(235, 177, 5);
-}
-
-</string>
+      <string notr="true"/>
      </property>
      <property name="text">
       <string>End turn</string>

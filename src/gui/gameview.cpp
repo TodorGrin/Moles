@@ -10,6 +10,10 @@
 GameView::GameView(QWidget *parent) : QWidget(parent), ui(new Ui::GameView) {
     ui->setupUi(this);
 
+    QFile qss(":/qss/stylesheet.qss");
+    qss.open(QFile::ReadOnly);
+    setStyleSheet(qss.readAll());
+
     setFocusPolicy(Qt::StrongFocus);
     tickTimer_ = new QTimer(this);
     connect(tickTimer_, SIGNAL(timeout()), this, SLOT(nextTick()));
