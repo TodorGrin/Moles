@@ -1,17 +1,7 @@
 #include "terrain.h"
 
 Terrain::Terrain(const QSize &size) : size_(size), tiles_(size.width()) {
-    float slopeHeight = size.height() / 10;
-    float skyHeight = size.height() / 2;
 
-    for (int x = 0; x < size.width(); ++x) {
-        for (int y = 0; y < size.height(); ++y) {
-            if (y < skyHeight + slopeHeight * x / size.width())
-                tiles_[x].emplace_back(QColor::fromRgb(128, 217, 255));
-            else
-                tiles_[x].emplace_back(QColor::fromRgb(76, 175, 79), QColor::fromRgb(128, 217, 255));
-        }
-    }
 }
 
 std::vector<std::vector<Tile>>& Terrain::tiles() {
@@ -24,4 +14,30 @@ QSize Terrain::size() const {
 
 bool Terrain::isInBounds(const QPointF &point) {
     return point.x() >= 0 && point.y() >= 0 && point.x() < size_.width() && point.y() < size_.height();
+}
+
+void Terrain::generate() {
+    tiles_.clear();
+    tiles_.resize(size_.width());
+    std::vector<double> heights(size_.width());
+
+    for (int i = 0; i < size_.width(); ++i) {
+        heights[i] = (((double) rand()) / RAND_MAX) * size_.height();
+    }
+
+    for (int i = 0; i < 8; ++i) {
+        for (int x = 1; x < size_.width() - 1; ++x) {
+            heights[x] = (heights[x - 1] + heights[x] + heights[x + 1]) / 3;
+        }
+    }
+
+    for (int x = 0; x < size_.width(); ++x) {
+        for (int i = 0; i < size_.height() - heights[x]; ++i) {
+            tiles_[x].emplace_back(QColor::fromRgb(128, 217, 255));
+        }
+
+        for (int i = 0; i < heights[x]; ++i) {
+            tiles_[x].emplace_back(QColor::fromRgb(76, 175, 79), QColor::fromRgb(128, 217, 255));
+        }
+    }
 }

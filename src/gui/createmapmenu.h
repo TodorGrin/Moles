@@ -23,6 +23,8 @@ class CreateMapMenu : public QWidget {
 
         void on_okButton_clicked();
 
+        void on_generateButton_clicked();
+
 private:
         MainWindow* main_window_;
 

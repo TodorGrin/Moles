@@ -12,6 +12,7 @@ class GameEngine {
 
         void tick();
         void nextTurn();
+        void generate();
 
         Team& currentTeam();
         Terrain& terrain();
@@ -21,6 +22,7 @@ class GameEngine {
         Terrain terrain_;
         std::vector<Team> teams_;
 
+        int teamsCount_;
         int currentTeam_ = 0;
 };
 

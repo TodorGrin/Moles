@@ -3,10 +3,16 @@
 const float EPS = 1e-6;
 const float G = 0.01;
 
-GameEngine::GameEngine(const Terrain &terrain, int teamsCount) : terrain_(terrain) {
-    std::vector<QColor> teamColors = {{244, 66, 54}, {156, 39, 176}, {33, 149, 243}, {76, 175, 79}};
+GameEngine::GameEngine(const Terrain &terrain, int teamsCount) : terrain_(terrain), teamsCount_(teamsCount) {
+    generate();
+}
 
-    for (int i = 0; i < teamsCount; ++i) {
+void GameEngine::generate() {
+    std::vector<QColor> teamColors = {{244, 66, 54}, {156, 39, 176}, {33, 149, 243}, {76, 175, 79}};
+    teams_.clear();
+    terrain_.generate();
+
+    for (int i = 0; i < teamsCount_; ++i) {
         teams_.emplace_back("Team " + QString::number(i + 1), 2, teamColors[i]);
         teams_[i].characters()[0].damage((40 * i) % 100);
 
@@ -21,6 +27,7 @@ GameEngine::GameEngine(const Terrain &terrain, int teamsCount) : terrain_(terrai
         }
     }
 }
+
 
 void GameEngine::tick() {
     for (Team &team : teams_) {

@@ -20,3 +20,7 @@ void CreateMapMenu::on_backButton_clicked() {
 void CreateMapMenu::on_okButton_clicked() {
     MainWindow::get(this)->openGameView(ui->gameView->gameEngine());
 }
+
+void CreateMapMenu::on_generateButton_clicked() {
+    ui->gameView->gameEngine()->generate();
+}
