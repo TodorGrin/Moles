@@ -2,11 +2,15 @@
 #include "ui_teaminfowidget.h"
 #include <QPalette>
 
-TeamInfoWidget::TeamInfoWidget(Team &team, QWidget *parent) : QWidget(parent), ui(new Ui::TeamInfoWidget), team_(team) {
+TeamInfoWidget::TeamInfoWidget(std::weak_ptr<Team> team, QWidget *parent) : QWidget(parent), ui(new Ui::TeamInfoWidget), team_(team) {
     ui->setupUi(this);
 
-    ui->teamName->setText(team.name());
-    ui->teamHealth->setStyleSheet(".QProgressBar::chunk{background-color: " + team.color().name() +"}");
+    if (!team_.expired()) {
+        auto team = team_.lock();
+
+        ui->teamName->setText(team->name());
+        ui->teamHealth->setStyleSheet(".QProgressBar::chunk{background-color: " + team->color().name() +"}");
+    }
 }
 
 TeamInfoWidget::~TeamInfoWidget() {
@@ -16,8 +20,12 @@ TeamInfoWidget::~TeamInfoWidget() {
 void TeamInfoWidget::paintEvent(QPaintEvent *event) {
     setUpdatesEnabled(false);
 
-    ui->teamHealth->setValue(100 * team_.health() / team_.maxHealth());
-    setVisible(team_.isAlive());
+    if (!team_.expired()) {
+        auto team = team_.lock();
+
+        ui->teamHealth->setValue(100 * team->health() / team->maxHealth());
+        setVisible(team->isAlive());
+    }
 
     setUpdatesEnabled(true);
 }

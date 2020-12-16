@@ -21,7 +21,7 @@ ChooseWeaponDialog::~ChooseWeaponDialog() {
 void ChooseWeaponDialog::on_weaponsList_itemClicked(QListWidgetItem *item) {
     for (auto &weapon : weapons_) {
         if (weapon->name() == item->text()) {
-            engine_.currentTeam().currentCharacter().actions().weapon = weapon;
+            engine_.currentTeam()->currentCharacter().actions().weapon = weapon;
             close();
             return;
         }

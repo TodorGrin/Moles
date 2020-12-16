@@ -32,7 +32,7 @@ void GameView::keyPressEvent(QKeyEvent *event) {
     if (!engine_)
         return;
 
-    Character &c = engine_->currentTeam().currentCharacter();
+    Character &c = engine_->currentTeam()->currentCharacter();
 
     if (event->key() == Qt::Key_D) c.actions().moveRight = true;
     if (event->key() == Qt::Key_A) c.actions().moveLeft = true;
@@ -53,7 +53,7 @@ void GameView::keyReleaseEvent(QKeyEvent *event) {
     if (!engine_)
         return;
 
-    Character &c = engine_->currentTeam().currentCharacter();
+    Character &c = engine_->currentTeam()->currentCharacter();
 
     if (event->key() == Qt::Key_D) c.actions().moveRight = false;
     if (event->key() == Qt::Key_A) c.actions().moveLeft = false;
@@ -68,12 +68,12 @@ void GameView::mouseMoveEvent(QMouseEvent *event) {
     int tileSize = std::min(size_.width() / terrain.size().width(), size_.height() / terrain.size().height());
     QPoint shift((size_.width() - terrain.size().width() * tileSize) / 2, size_.height() - terrain.size().height() * tileSize);
 
-    Character &ch = engine_->currentTeam().currentCharacter();
+    Character &ch = engine_->currentTeam()->currentCharacter();
     QPoint chPos((ch.position().x() - ch.size().width() / 2) * tileSize, (ch.position().y() - ch.size().height() / 2) * tileSize);
     chPos += shift;
 
     QVector2D dv(event->pos() - chPos);
-    engine_->currentTeam().currentCharacter().actions().weapon->angle_ = atan2(dv.y(), dv.x());
+    engine_->currentTeam()->currentCharacter().actions().weapon->angle_ = atan2(dv.y(), dv.x());
 }
 
 void GameView::rebuildUi() {
@@ -83,11 +83,13 @@ void GameView::rebuildUi() {
     }
     teamInfoWidgets.clear();
 
-    for (Team &team : engine_->teams()) {
-        TeamInfoWidget *widget = new TeamInfoWidget(team);
-        ui->teamsInfoFrame->addWidget(widget);
+    if (engine_) {
+        for (auto team : engine_->teams()) {
+            TeamInfoWidget *widget = new TeamInfoWidget(team);
+            ui->teamsInfoFrame->addWidget(widget);
 
-        teamInfoWidgets.push_back(widget);
+            teamInfoWidgets.push_back(widget);
+        }
     }
 }
 
@@ -100,12 +102,12 @@ void GameView::nextTick() {
 
     QString teamAlive = "";
 
-    for (Team &team : engine_->teams()) {
-        if (team.isAlive()) {
+    for (auto team : engine_->teams()) {
+        if (team->isAlive()) {
             if (teamAlive != "")
                 return;
 
-            teamAlive = team.name();
+            teamAlive = team->name();
         }
     }
 
@@ -146,8 +148,8 @@ void GameView::paintEvent(QPaintEvent *event) {
 }
 
 void GameView::drawTeamsInfo(QPainter &painter) {
-    ui->currentTeam->setText(engine_->currentTeam().name());
-    ui->currentWeapon->setText(engine_->currentTeam().currentCharacter().actions().weapon->name());
+    ui->currentTeam->setText(engine_->currentTeam()->name());
+    ui->currentWeapon->setText(engine_->currentTeam()->currentCharacter().actions().weapon->name());
 }
 
 void GameView::drawCharacters(QPainter &painter, int tileSize) {
@@ -156,10 +158,10 @@ void GameView::drawCharacters(QPainter &painter, int tileSize) {
     QFont font("Verdana", 12);
     painter.setFont(font);
 
-    for (Team &team : engine_->teams()) {
-        painter.setBrush(QBrush(team.color(), Qt::SolidPattern));
+    for (auto team : engine_->teams()) {
+        painter.setBrush(QBrush(team->color(), Qt::SolidPattern));
 
-        for (Character &ch : team.characters()) {
+        for (Character &ch : team->characters()) {
             if (ch.isAlive()) {
                 painter.setPen(Qt::black);
                 painter.drawRect((ch.position().x() - ch.size().width() / 2) * tileSize,
@@ -194,14 +196,14 @@ void GameView::drawTerrain(QPainter &painter) {
         }
     }
 
-    std::shared_ptr<Weapon> weapon = engine_->currentTeam().currentCharacter().actions().weapon;
+    std::shared_ptr<Weapon> weapon = engine_->currentTeam()->currentCharacter().actions().weapon;
     if (weapon) {
         QPen pen(Qt::DotLine);
         pen.setWidth(2);
         painter.save();
         painter.setPen(pen);
 
-        Character &ch = engine_->currentTeam().currentCharacter();
+        Character &ch = engine_->currentTeam()->currentCharacter();
         QPointF chPos(ch.position().toPointF() * tileSize);
         painter.drawLine(chPos, chPos + tileSize * 10 * QPointF(cos(weapon->angle_), sin(weapon->angle_)));
 

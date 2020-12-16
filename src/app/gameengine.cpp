@@ -13,10 +13,10 @@ void GameEngine::generate() {
     terrain_.generate();
 
     for (int i = 0; i < teamsCount_; ++i) {
-        teams_.emplace_back("Team " + QString::number(i + 1), 2, teamColors[i]);
-        teams_[i].characters()[0].damage((40 * i) % 100);
+        teams_.push_back(std::make_shared<Team>("Team " + QString::number(i + 1), 2, teamColors[i]));
+        teams_[i]->characters()[0].damage((40 * i) % 100);
 
-        for (Character &ch : teams_[i].characters()) {
+        for (Character &ch : teams_[i]->characters()) {
             float x = ((double) rand() / RAND_MAX) * terrain_.size().width();
             float y = ch.size().height() / 2;
 
@@ -30,8 +30,8 @@ void GameEngine::generate() {
 
 
 void GameEngine::tick() {
-    for (Team &team : teams_) {
-        for (Character &c : team.characters()) {
+    for (auto team : teams_) {
+        for (Character &c : team->characters()) {
             if (c.actions().damagedCooldown > 0)
                 c.actions().damagedCooldown--;
 
@@ -54,7 +54,7 @@ void GameEngine::tick() {
         }
     }
 
-    Character &c = currentTeam().currentCharacter();
+    Character &c = currentTeam()->currentCharacter();
 
     if (!c.isAlive()) {
         nextTurn();
@@ -71,8 +71,8 @@ void GameEngine::tick() {
             c.setSpeed(c.speed() + QVector2D(0, -25 * G));
     }
 
-    for (Team &team : teams_) {
-        for (Character &c : team.characters()) {
+    for (auto team : teams_) {
+        for (Character &c : team->characters()) {
             if (terrain_.isInBounds(c.position().toPointF())) {
                 if (c.speed().x() < 0 && !terrain_.tile(c.position().toPointF() + QPointF(-c.size().width() / 2 - EPS, 0)).isBackground())
                     c.setSpeed(QVector2D(0, c.speed().y()));
@@ -100,15 +100,15 @@ void GameEngine::nextTurn() {
     for (int i = 1; i < teams_.size(); ++i) {
         int nextTeam = (currentTeam_ + i) % teams_.size();
 
-        if (teams_[nextTeam].isAlive()) {
-            teams_[nextTeam].nextTurn();
+        if (teams_[nextTeam]->isAlive()) {
+            teams_[nextTeam]->nextTurn();
             currentTeam_ = nextTeam;
             return;
         }
     }
 }
 
-Team& GameEngine::currentTeam() {
+std::shared_ptr<Team> GameEngine::currentTeam() {
     return teams_[currentTeam_];
 }
 
@@ -116,6 +116,6 @@ Terrain& GameEngine::terrain() {
     return terrain_;
 }
 
-std::vector<Team>& GameEngine::teams() {
+std::vector<std::shared_ptr<Team>>& GameEngine::teams() {
     return teams_;
 }

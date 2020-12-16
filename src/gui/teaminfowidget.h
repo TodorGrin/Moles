@@ -12,7 +12,7 @@ class TeamInfoWidget : public QWidget {
     Q_OBJECT
 
     public:
-        explicit TeamInfoWidget(Team &team, QWidget *parent = nullptr);
+        explicit TeamInfoWidget(std::weak_ptr<Team> team, QWidget *parent = nullptr);
         ~TeamInfoWidget();
 
     protected:
@@ -20,7 +20,7 @@ class TeamInfoWidget : public QWidget {
 
     private:
         Ui::TeamInfoWidget *ui;
-        Team &team_;
+        std::weak_ptr<Team> team_;
 };
 
 #endif // TEAMINFOWIDGET_H

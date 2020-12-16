@@ -17,7 +17,7 @@ Gun::Gun(double g, double power, double damage, double knockback, int maxTilesDe
 
 void Gun::shoot(GameEngine &engine) {
     Terrain &t = engine.terrain();
-    Character &curCh = engine.currentTeam().currentCharacter();
+    Character &curCh = engine.currentTeam()->currentCharacter();
     QPointF chPos(curCh.position().toPointF());
     Trajectory ray(QVector2D(chPos), power_ * QVector2D(cos(angle_), sin(angle_)), g_);
 
@@ -47,9 +47,9 @@ void Gun::shoot(GameEngine &engine) {
     }
 
     double reachLength = ray.t(p);
-    for (Team &team : engine.teams()) {
-        for (Character &ch : team.characters()) {
-            if (&ch == &engine.currentTeam().currentCharacter() || ray.t(ch.position().toPointF()) > reachLength)
+    for (auto team : engine.teams()) {
+        for (Character &ch : team->characters()) {
+            if (&ch == &engine.currentTeam()->currentCharacter() || ray.t(ch.position().toPointF()) > reachLength)
                 continue;
 
             double x = ch.position().x();

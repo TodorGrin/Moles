@@ -14,13 +14,13 @@ class GameEngine {
         void nextTurn();
         void generate();
 
-        Team& currentTeam();
+        std::shared_ptr<Team> currentTeam();
         Terrain& terrain();
-        std::vector<Team>& teams();
+        std::vector<std::shared_ptr<Team>>& teams();
 
     private:
         Terrain terrain_;
-        std::vector<Team> teams_;
+        std::vector<std::shared_ptr<Team>> teams_;
 
         int teamsCount_;
         int currentTeam_ = 0;

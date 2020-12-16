@@ -25,8 +25,8 @@ void Bazooka::onTileHit(const QPointF &position, GameEngine &engine) {
         }
     }
 
-    for (Team &team : engine.teams()) {
-        for (Character &ch : team.characters()) {
+    for (auto team : engine.teams()) {
+        for (Character &ch : team->characters()) {
             double distanceToExplosionCenter = (ch.position() - QVector2D(position)).length();
 
             if (distanceToExplosionCenter <= explosionRadius_) {
