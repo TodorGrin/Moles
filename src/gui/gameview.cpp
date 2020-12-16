@@ -2,6 +2,8 @@
 #include "ui_gameview.h"
 #include "teaminfowidget.h"
 #include "chooseweapondialog.h"
+#include "gameoverdialog.h"
+#include "mainwindow.h"
 #include <QPainter>
 #include <QBrush>
 #include <QPainterPath>
@@ -95,6 +97,23 @@ void GameView::nextTick() {
 
     engine_->tick();
     update();
+
+    QString teamAlive = "";
+
+    for (Team &team : engine_->teams()) {
+        if (team.isAlive()) {
+            if (teamAlive != "")
+                return;
+
+            teamAlive = team.name();
+        }
+    }
+
+    GameOverDialog dlg(teamAlive);
+    dlg.setStyleSheet(stylesheet_);
+    dlg.exec();
+
+    MainWindow::get(this)->openMainMenu();
 }
 
 void GameView::setGameEngine(std::shared_ptr<GameEngine> gameEngine) {

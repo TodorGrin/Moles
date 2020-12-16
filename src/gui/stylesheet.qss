@@ -3,7 +3,7 @@
     border: 2px solid rgb(245, 123, 0);
     padding: 5px;
 
-    font: 8pt "Verdana";
+    font: "Verdana";
     font-weight: bold;
     color: rgb(93, 64, 55);
 }
@@ -17,7 +17,7 @@
 }
 
 .QLabel {
-    font: 8pt "Verdana";
+    font: "Verdana";
     font-weight: bold;
     color: rgb(93, 64, 55);
 }
