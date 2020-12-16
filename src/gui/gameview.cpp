@@ -109,9 +109,10 @@ void GameView::nextTick() {
         }
     }
 
-    GameOverDialog dlg(teamAlive);
-    dlg.setStyleSheet(stylesheet_);
-    dlg.exec();
+    GameOverDialog *dlg = new GameOverDialog(teamAlive);
+    dlg->setStyleSheet(stylesheet_);
+    dlg->exec();
+    dlg->deleteLater();
 
     MainWindow::get(this)->openMainMenu();
 }

@@ -22,21 +22,27 @@ MainWindow* MainWindow::get(QWidget *widget) {
 
 void MainWindow::openMainMenu() {
     ui->createMapMenu->setGameEngine(nullptr);
+    ui->gameView->setGameEngine(nullptr);
     ui->stackedWidget->setCurrentIndex(0);
+    setWindowState(Qt::WindowMaximized);
 }
 
 void MainWindow::openCreateTeamMenu() {
     ui->createMapMenu->setGameEngine(nullptr);
+    ui->gameView->setGameEngine(nullptr);
     ui->stackedWidget->setCurrentIndex(2);
+    setWindowState(Qt::WindowMaximized);
 }
 
 void MainWindow::openCreateMapMenu(std::shared_ptr<GameEngine> engine_) {
     ui->createMapMenu->setGameEngine(engine_);
+    ui->gameView->setGameEngine(nullptr);
     ui->stackedWidget->setCurrentIndex(1);
+    setWindowState(Qt::WindowMaximized);
 }
 
-
 void MainWindow::openGameView(std::shared_ptr<GameEngine> engine_) {
+    ui->createMapMenu->setGameEngine(nullptr);
     ui->gameView->setGameEngine(engine_);
     ui->stackedWidget->setCurrentIndex(3);
     setWindowState(Qt::WindowFullScreen);
