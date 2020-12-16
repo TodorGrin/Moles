@@ -12,6 +12,7 @@ HEADERS += \
     $$PWD/weapon.h \
     $$PWD/weapons/bazooka.h \
     $$PWD/weapons/gun.h \
+    $$PWD/weapons/shotgun.h \
     $$PWD/weapons/uzi.h
 
 SOURCES += \
@@ -25,6 +26,7 @@ SOURCES += \
     $$PWD/weapon.cpp \
     $$PWD/weapons/bazooka.cpp \
     $$PWD/weapons/gun.cpp \
+    $$PWD/weapons/shotgun.cpp \
     $$PWD/weapons/uzi.cpp
 
 RESOURCES +=

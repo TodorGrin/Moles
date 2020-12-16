@@ -5,6 +5,7 @@
 #include <QListWidget>
 #include "weapons/bazooka.h"
 #include "weapons/uzi.h"
+#include "weapons/shotgun.h"
 #include "gameengine.h"
 
 namespace Ui {
@@ -24,7 +25,8 @@ class ChooseWeaponDialog : public QDialog {
 
         std::vector<std::shared_ptr<Weapon>> weapons_ = {
             std::make_shared<Uzi>(),
-            std::make_shared<Bazooka>()
+            std::make_shared<Bazooka>(),
+            std::make_shared<Shotgun>()
         };
 
     private slots:
