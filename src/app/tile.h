@@ -10,8 +10,8 @@ class Tile {
 
         void destroy();
 
-        QColor color();
-        bool isBackground();
+        QColor color() const;
+        bool isBackground() const;
 
     private:
         QColor color_;

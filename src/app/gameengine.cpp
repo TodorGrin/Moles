@@ -40,34 +40,51 @@ void GameEngine::tick() {
                 c.actions().damageDirection = QVector2D(0, 0);
             }
 
-            if (terrain_.tiles()[c.position().x()][c.position().y() + c.size().height() / 2 + EPS].isBackground())
+            if (terrain_.isInBounds(c.position().toPointF())) {
+                if (terrain_.tile(c.position().toPointF() + QPointF(0, c.size().height() / 2 + EPS)).isBackground())
+                    c.setSpeed(c.speed() + QVector2D(0, G));
+                else if (!terrain_.tile(c.position().toPointF() + QPointF(0, c.size().height() / 2)).isBackground()) {
+                    c.setSpeed(QVector2D(c.speed().x() * 0.95, 0));
+                    c.setPosition(QVector2D(c.position().x(), floor(c.position().y() - c.size().height() / 2) + c.size().height() / 2));
+                }
+            }
+            else {
                 c.setSpeed(c.speed() + QVector2D(0, G));
-            else if (!terrain_.tiles()[c.position().x()][c.position().y() + c.size().height() / 2].isBackground()) {
-                c.setSpeed(QVector2D(c.speed().x() * 0.95, 0));
-                c.setPosition(QVector2D(c.position().x(), floor(c.position().y() - c.size().height() / 2) + c.size().height() / 2));
             }
         }
     }
 
     Character &c = currentTeam().currentCharacter();
-    if (c.actions().moveLeft && terrain_.tiles()[c.position().x() - c.size().width() / 2 - EPS][c.position().y()].isBackground())
-        c.setPosition(c.position() + QVector2D(-c.stepLength(), 0));
 
-    if (c.actions().moveRight && terrain_.tiles()[c.position().x() + c.size().width() / 2 + EPS][c.position().y()].isBackground())
-        c.setPosition(c.position() + QVector2D(c.stepLength(), 0));
+    if (!c.isAlive()) {
+        nextTurn();
+    }
 
-    if (c.actions().jump && !terrain_.tiles()[c.position().x()][c.position().y() + c.size().height() / 2 + EPS].isBackground())
-        c.setSpeed(c.speed() + QVector2D(0, -25 * G));
+    if (terrain_.isInBounds(c.position().toPointF())) {
+        if (c.actions().moveLeft && terrain_.tile(c.position().toPointF() + QPointF(-c.size().width() / 2 - EPS, 0)).isBackground())
+            c.setPosition(c.position() + QVector2D(-c.stepLength(), 0));
+
+        if (c.actions().moveRight && terrain_.tile(c.position().toPointF() + QPointF(c.size().width() / 2 + EPS, 0)).isBackground())
+            c.setPosition(c.position() + QVector2D(c.stepLength(), 0));
+
+        if (c.actions().jump && !terrain_.tile(c.position().toPointF() + QPointF(0, c.size().height() / 2 + EPS)).isBackground())
+            c.setSpeed(c.speed() + QVector2D(0, -25 * G));
+    }
 
     for (Team &team : teams_) {
         for (Character &c : team.characters()) {
-            if (c.speed().x() < 0 && !terrain_.tiles()[c.position().x() - c.size().width() / 2 - EPS][c.position().y()].isBackground())
-                c.setSpeed(QVector2D(0, c.speed().y()));
+            if (terrain_.isInBounds(c.position().toPointF())) {
+                if (c.speed().x() < 0 && !terrain_.tile(c.position().toPointF() + QPointF(-c.size().width() / 2 - EPS, 0)).isBackground())
+                    c.setSpeed(QVector2D(0, c.speed().y()));
 
-            if (c.speed().x() > 0 && !terrain_.tiles()[c.position().x() + c.size().width() / 2 + EPS][c.position().y()].isBackground())
-                c.setSpeed(QVector2D(0, c.speed().y()));
+                if (c.speed().x() > 0 && !terrain_.tile(c.position().toPointF() + QPointF(c.size().width() / 2 + EPS, 0)).isBackground())
+                    c.setSpeed(QVector2D(0, c.speed().y()));
+            }
 
             c.setPosition(c.position() + c.speed());
+
+            if (c.position().y() > terrain_.size().height())
+                c.damage(c.maxHealth());
         }
     }
 

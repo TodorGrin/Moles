@@ -19,10 +19,10 @@ void Tile::destroy() {
     isBackground_ = true;
 }
 
-QColor Tile::color() {
+QColor Tile::color() const {
     return isBackground_ ? backgroundColor_ : color_;
 }
 
-bool Tile::isBackground() {
+bool Tile::isBackground() const {
     return isBackground_;
 }

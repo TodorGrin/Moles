@@ -12,7 +12,7 @@ QSize Terrain::size() const {
     return size_;
 }
 
-bool Terrain::isInBounds(const QPointF &point) {
+bool Terrain::isInBounds(const QPointF &point) const {
     return point.x() >= 0 && point.y() >= 0 && point.x() < size_.width() && point.y() < size_.height();
 }
 
@@ -40,4 +40,11 @@ void Terrain::generate() {
             tiles_[x].emplace_back(QColor::fromRgb(76, 175, 79), QColor::fromRgb(128, 217, 255));
         }
     }
+}
+
+const Tile Terrain::tile(const QPointF &point) const {
+    if (isInBounds(point))
+        return tiles_[point.x()][point.y()];
+
+    return Tile(QColor::fromRgb(128, 217, 255));
 }
