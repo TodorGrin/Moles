@@ -14,7 +14,7 @@ void CreateTeamMenu::on_backButton_clicked() {
 }
 
 void CreateTeamMenu::on_playButton_clicked() {
-    std::shared_ptr<GameEngine> engine = std::make_shared<GameEngine>(Terrain(QSize(200, 100)), ui->teamsCount->value());
+    std::shared_ptr<GameEngine> engine = std::make_shared<GameEngine>(Terrain(QSize(600, 300)), ui->teamsCount->value());
 
     MainWindow::get(this)->openCreateMapMenu(engine);
 }

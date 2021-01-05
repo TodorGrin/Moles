@@ -4,7 +4,10 @@
 #include <QWidget>
 #include <memory>
 #include <QTimer>
+#include <QElapsedTimer>
 #include <QMouseEvent>
+#include <QImage>
+
 #include "gameengine.h"
 #include "teaminfowidget.h"
 #include "chooseweapondialog.h"
@@ -28,6 +31,7 @@ class GameView : public QWidget {
         void keyPressEvent(QKeyEvent *event) override;
         void keyReleaseEvent(QKeyEvent *event) override;
         void mouseMoveEvent(QMouseEvent *event) override;
+        void resizeEvent(QResizeEvent *event) override;
 
     private:
         std::shared_ptr<GameEngine> engine_ = nullptr;
@@ -39,11 +43,17 @@ class GameView : public QWidget {
         ChooseWeaponDialog *chooseWeaponDialog;
         QString stylesheet_;
 
+        QImage terrainCache;
+
+        QElapsedTimer fpsCounterStart;
+        int framesCount = 0;
+        double fps = 0;
+
         void rebuildUi();
 
         void drawTeamsInfo(QPainter &painter);
         void drawCharacters(QPainter &painter, int tileSize);
-        void drawTerrain(QPainter &painter);
+        void drawTerrain(QPainter &painter, int tileSize);
 
     private slots:
         void nextTick();

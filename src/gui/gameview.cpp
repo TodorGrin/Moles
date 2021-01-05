@@ -76,6 +76,10 @@ void GameView::mouseMoveEvent(QMouseEvent *event) {
     engine_->currentTeam()->currentCharacter().actions().weapon->angle_ = atan2(dv.y(), dv.x());
 }
 
+void GameView::resizeEvent(QResizeEvent *event) {
+    terrainCache = QImage();
+}
+
 void GameView::rebuildUi() {
     for (TeamInfoWidget *widget : teamInfoWidgets) {
         ui->teamsInfoFrame->removeWidget(widget);
@@ -96,6 +100,9 @@ void GameView::rebuildUi() {
 void GameView::nextTick() {
     if (!engine_)
         return;
+
+    if (engine_->currentTeam()->currentCharacter().actions().shoot)
+        terrainCache = QImage();
 
     engine_->tick();
     update();
@@ -126,7 +133,7 @@ void GameView::setGameEngine(std::shared_ptr<GameEngine> gameEngine) {
         rebuildUi();
 
         tickTimer_->stop();
-        tickTimer_->start(1.0 / 60);
+        tickTimer_->start(1000.0 / 60);
     }
     else
         tickTimer_->stop();
@@ -140,11 +147,53 @@ void GameView::paintEvent(QPaintEvent *event) {
     if (!engine_)
         return;
 
+    if (framesCount == 0) {
+        fpsCounterStart.start();
+    }
+
+    if (fpsCounterStart.elapsed() > 1000) {
+        framesCount = 0;
+        fpsCounterStart.restart();
+    }
+
     QPainter painter(this);
     size_ = painter.window().size();
 
-    drawTerrain(painter);
+    Terrain &terrain = engine_->terrain();
+    int tileSize = std::min(size_.width() / terrain.size().width(), size_.height() / terrain.size().height());
+    QPoint shift((size_.width() - terrain.size().width() * tileSize) / 2, size_.height() - terrain.size().height() * tileSize);
+
+    painter.save();
+    painter.fillRect(0, 0, painter.device()->width(), painter.device()->height(), QColor::fromRgb(128, 217, 255));
+    painter.translate(shift);
+
+    if (terrainCache.isNull()) {
+        terrainCache = QImage(tileSize * terrain.size(), QImage::Format_ARGB32_Premultiplied);
+        QPainter terrainPainter(&terrainCache);
+        drawTerrain(terrainPainter, tileSize);
+    }
+
+    painter.drawImage(0, 0, terrainCache);
+    std::shared_ptr<Weapon> weapon = engine_->currentTeam()->currentCharacter().actions().weapon;
+    if (weapon) {
+        QPen pen(Qt::DotLine);
+        pen.setWidth(2);
+        painter.save();
+        painter.setPen(pen);
+
+        Character &ch = engine_->currentTeam()->currentCharacter();
+        QPointF chPos(ch.position().toPointF() * tileSize);
+        painter.drawLine(chPos, chPos + tileSize * 10 * QPointF(cos(weapon->angle_), sin(weapon->angle_)));
+
+        painter.restore();
+    }
+    drawCharacters(painter, tileSize);
+    painter.restore();
+
     drawTeamsInfo(painter);
+
+    framesCount++;
+    painter.drawText(10, 10, QString::number(1000 * (double) framesCount / fpsCounterStart.elapsed()));
 }
 
 void GameView::drawTeamsInfo(QPainter &painter) {
@@ -180,14 +229,8 @@ void GameView::drawCharacters(QPainter &painter, int tileSize) {
     painter.restore();
 }
 
-void GameView::drawTerrain(QPainter &painter) {
+void GameView::drawTerrain(QPainter &painter, int tileSize) {
     Terrain &terrain = engine_->terrain();
-    int tileSize = std::min(size_.width() / terrain.size().width(), size_.height() / terrain.size().height());
-    QPoint shift((size_.width() - terrain.size().width() * tileSize) / 2, size_.height() - terrain.size().height() * tileSize);
-
-    painter.save();
-    painter.fillRect(0, 0, painter.window().width(), painter.window().height(), QColor::fromRgb(128, 217, 255));
-    painter.translate(shift);
 
     for (int x = 0; x < terrain.size().width(); ++x) {
         for (int y = 0; y < terrain.size().height(); ++y) {
@@ -195,24 +238,6 @@ void GameView::drawTerrain(QPainter &painter) {
             painter.fillRect(rec, terrain.tiles()[x][y].color());
         }
     }
-
-    std::shared_ptr<Weapon> weapon = engine_->currentTeam()->currentCharacter().actions().weapon;
-    if (weapon) {
-        QPen pen(Qt::DotLine);
-        pen.setWidth(2);
-        painter.save();
-        painter.setPen(pen);
-
-        Character &ch = engine_->currentTeam()->currentCharacter();
-        QPointF chPos(ch.position().toPointF() * tileSize);
-        painter.drawLine(chPos, chPos + tileSize * 10 * QPointF(cos(weapon->angle_), sin(weapon->angle_)));
-
-        painter.restore();
-    }
-
-    drawCharacters(painter, tileSize);
-
-    painter.restore();
 }
 
 void GameView::on_pushButton_clicked() {
