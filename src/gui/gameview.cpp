@@ -101,29 +101,32 @@ void GameView::nextTick() {
     if (!engine_)
         return;
 
-    if (engine_->currentTeam()->currentCharacter().actions().shoot)
+    if (engine_->terrain().changed()) {
         terrainCache = QImage();
+        engine_->terrain().setChanged(false);
+    }
 
     engine_->tick();
     update();
 
     QString teamAlive = "";
+    int teamsAlive = 0;
 
     for (auto team : engine_->teams()) {
         if (team->isAlive()) {
-            if (teamAlive != "")
-                return;
-
             teamAlive = team->name();
+            teamsAlive++;
         }
     }
 
-    GameOverDialog *dlg = new GameOverDialog(teamAlive);
-    dlg->setStyleSheet(stylesheet_);
-    dlg->exec();
-    dlg->deleteLater();
+    if (teamAlive == 1) {
+        GameOverDialog *dlg = new GameOverDialog(teamAlive);
+        dlg->setStyleSheet(stylesheet_);
+        dlg->exec();
+        dlg->deleteLater();
 
-    MainWindow::get(this)->openMainMenu();
+        MainWindow::get(this)->openMainMenu();
+    }
 }
 
 void GameView::setGameEngine(std::shared_ptr<GameEngine> gameEngine) {

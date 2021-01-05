@@ -40,6 +40,7 @@ void Gun::shoot(GameEngine &engine) {
                 break;
 
             tile.destroy();
+            t.setChanged(true);
             onTileHit(p, engine);
         }
 

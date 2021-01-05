@@ -22,6 +22,7 @@ void Bazooka::onTileHit(const QPointF &position, GameEngine &engine) {
                 continue;
 
             engine.terrain().tiles()[x][y].destroy();
+            engine.terrain().setChanged(true);
         }
     }
 

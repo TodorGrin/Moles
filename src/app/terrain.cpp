@@ -41,6 +41,7 @@ double Terrain::smoothstep(double t) {
 }
 
 void Terrain::generate() {
+    changed_ = true;
     tiles_.clear();
     tiles_.resize(size_.width());
     std::vector<double> heights(size_.width());
@@ -58,6 +59,14 @@ void Terrain::generate() {
             tiles_[x].emplace_back(QColor::fromRgb(76, 175, 79), QColor::fromRgb(128, 217, 255));
         }
     }
+}
+
+void Terrain::setChanged(bool val) {
+    changed_ = val;
+}
+
+bool Terrain::changed() const {
+    return changed_;
 }
 
 const Tile Terrain::tile(const QPointF &point) const {
