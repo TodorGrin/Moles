@@ -18,6 +18,9 @@ class Terrain {
     private:
         QSize size_;
         std::vector<std::vector<Tile>> tiles_;
+
+        static void addNoise(std::vector<double> &vec, int width, int minHeight, int maxHeight, int numPoints, double (*interp)(double t));
+        static double smoothstep(double t);
 };
 
 #endif // TERRAIN_H
